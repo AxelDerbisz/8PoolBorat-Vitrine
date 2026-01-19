@@ -5,9 +5,10 @@ import './Club.css';
 
 interface ClubInfo {
   name: string;
+  founded?: string;
   description: string;
   history: string;
-  palmares: string[];
+  palmares?: string[];
   address: string;
   phone: string;
   email: string;
@@ -95,14 +96,17 @@ const Club = () => {
         <p>{clubInfo.history}</p>
       </section>
 
-      <section className="club-section">
-        <h2>Palmarès</h2>
-        <ul className="palmares-list">
-          {clubInfo.palmares.map((achievement, index) => (
-            <li key={index}>{achievement}</li>
-          ))}
-        </ul>
-      </section>
+      {clubInfo.palmares && clubInfo.palmares.length > 0 && (
+        <section className="club-section">
+          <h2>Palmarès</h2>
+          <ul className="palmares-list">
+            {clubInfo.palmares.map((achievement, index) => (
+              <li key={index}>{achievement}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
 
       <section className="club-section contact-info">
         <h2>Nous Trouver</h2>
