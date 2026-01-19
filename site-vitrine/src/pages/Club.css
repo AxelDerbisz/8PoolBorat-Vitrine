@@ -1,0 +1,95 @@
+.club {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.club h1 {
+  font-size: 2.5rem;
+  color: #1a472a;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.club-section {
+  background: white;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.club-section h2 {
+  font-size: 1.8rem;
+  color: #2d5a3d;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid #ffd700;
+  padding-bottom: 0.5rem;
+}
+
+.club-section p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.palmares-list {
+  list-style: none;
+  padding: 0;
+}
+
+.palmares-list li {
+  font-size: 1.1rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: #f8f9fa;
+  border-left: 4px solid #ffd700;
+  border-radius: 4px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.palmares-list li:hover {
+  transform: translateX(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.palmares-list li::before {
+  content: '🏆 ';
+  margin-right: 0.5rem;
+}
+
+.contact-info p {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.contact-info strong {
+  color: #2d5a3d;
+  margin-right: 0.5rem;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #888;
+  padding: 3rem;
+}
+
+@media (max-width: 768px) {
+  .club h1 {
+    font-size: 2rem;
+  }
+
+  .club-section {
+    padding: 1.5rem;
+  }
+
+  .club-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .club-section p,
+  .palmares-list li {
+    font-size: 1rem;
+  }
+}

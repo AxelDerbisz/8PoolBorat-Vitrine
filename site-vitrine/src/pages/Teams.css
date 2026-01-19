@@ -1,0 +1,191 @@
+.teams {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.teams h1 {
+  font-size: 2.5rem;
+  color: #1a472a;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.teams-intro {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 3rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.team-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.team-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #ffd700;
+}
+
+.team-header h2 {
+  font-size: 1.8rem;
+  color: #1a472a;
+  margin: 0;
+}
+
+.division-badge {
+  background: #2d5a3d;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.team-info {
+  margin-bottom: 1.5rem;
+}
+
+.ranking {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.ranking-label {
+  color: #555;
+  font-weight: 500;
+}
+
+.ranking-value {
+  background: #ffd700;
+  color: #1a472a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.team-players,
+.team-schedule {
+  margin-top: 1.5rem;
+}
+
+.team-players h3,
+.team-schedule h3 {
+  font-size: 1.2rem;
+  color: #2d5a3d;
+  margin-bottom: 1rem;
+}
+
+.team-players ul {
+  list-style: none;
+  padding: 0;
+}
+
+.team-players li {
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background: #f8f9fa;
+  border-left: 3px solid #2d5a3d;
+  border-radius: 4px;
+  transition: transform 0.3s ease;
+}
+
+.team-players li:hover {
+  transform: translateX(4px);
+  background: #e9ecef;
+}
+
+.match-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.match-item:hover {
+  background: #e9ecef;
+}
+
+.match-date {
+  min-width: 80px;
+  font-weight: 600;
+  color: #2d5a3d;
+  font-size: 0.9rem;
+}
+
+.match-details {
+  flex: 1;
+}
+
+.opponent {
+  font-weight: 600;
+  color: #1a472a;
+  margin-bottom: 0.25rem;
+}
+
+.location {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.no-teams {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #888;
+  padding: 3rem;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #888;
+  padding: 3rem;
+}
+
+@media (max-width: 768px) {
+  .teams h1 {
+    font-size: 2rem;
+  }
+
+  .teams-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .match-item {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

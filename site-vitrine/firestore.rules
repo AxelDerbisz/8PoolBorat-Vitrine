@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Public read access for all collections (website content)
+    match /news/{document=**} {
+      allow read: if true;
+      allow write: if false; // Only allow writes from admin panel or Firebase Console
+    }
+
+    match /teams/{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /clubInfo/{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /sponsors/{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Deny all other access by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,343 @@
+.school {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.school h1 {
+  font-size: 2.5rem;
+  color: #1a472a;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.school-intro {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 3rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.8;
+}
+
+/* Course Section */
+.course-section {
+  margin-bottom: 4rem;
+}
+
+.course-section h2 {
+  font-size: 2rem;
+  color: #1a472a;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.course-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.course-icon {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.course-card h3 {
+  font-size: 1.6rem;
+  color: #1a472a;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.course-level {
+  text-align: center;
+  color: #2d5a3d;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.course-details {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.course-details li {
+  padding: 0.5rem 0;
+  color: #555;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.course-details li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #2d5a3d;
+  font-weight: bold;
+}
+
+.course-info {
+  border-top: 2px solid #f0f0f0;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.course-info p {
+  margin: 0.5rem 0;
+  color: #666;
+}
+
+.course-info strong {
+  color: #2d5a3d;
+}
+
+/* Coaches Section */
+.coaches-section {
+  margin-bottom: 4rem;
+  background: #f8f9fa;
+  padding: 3rem 2rem;
+  border-radius: 12px;
+}
+
+.coaches-section h2 {
+  font-size: 2rem;
+  color: #1a472a;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.coaches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.coach-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.coach-avatar {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.coach-card h3 {
+  font-size: 1.4rem;
+  color: #1a472a;
+  margin-bottom: 0.5rem;
+}
+
+.coach-title {
+  color: #2d5a3d;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.coach-card p:last-child {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Schedule Section */
+.schedule-section {
+  margin-bottom: 4rem;
+}
+
+.schedule-section h2 {
+  font-size: 2rem;
+  color: #1a472a;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.schedule-table {
+  max-width: 700px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.schedule-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.schedule-row:last-child {
+  border-bottom: none;
+}
+
+.schedule-row.header {
+  background: #2d5a3d;
+  color: white;
+  font-weight: 600;
+}
+
+.schedule-row div {
+  display: flex;
+  align-items: center;
+}
+
+/* Pricing Section */
+.pricing-section {
+  margin-bottom: 4rem;
+}
+
+.pricing-section h2 {
+  font-size: 2rem;
+  color: #1a472a;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pricing-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.pricing-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.pricing-card.featured {
+  border: 3px solid #ffd700;
+}
+
+.pricing-card .badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffd700;
+  color: #1a472a;
+  padding: 0.25rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.pricing-card h3 {
+  font-size: 1.4rem;
+  color: #1a472a;
+  margin-bottom: 1rem;
+}
+
+.price {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #2d5a3d;
+  margin: 1rem 0;
+}
+
+.pricing-card p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* CTA */
+.school-cta {
+  background: linear-gradient(135deg, #2d5a3d 0%, #1a472a 100%);
+  color: white;
+  padding: 3rem 2rem;
+  text-align: center;
+  border-radius: 12px;
+}
+
+.school-cta h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #ffd700;
+}
+
+.school-cta p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn {
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-block;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background: #ffd700;
+  color: #1a472a;
+}
+
+.btn-primary:hover {
+  background: #ffed4e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .school h1 {
+    font-size: 2rem;
+  }
+
+  .courses-grid,
+  .coaches-grid,
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .schedule-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .schedule-row div {
+    justify-content: center;
+  }
+}
