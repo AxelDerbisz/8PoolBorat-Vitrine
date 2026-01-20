@@ -1,0 +1,39 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null
+             && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Incident photos - strict user isolation and admin access
+    match /incidents/{userId}/{fileName} {
+      // Allow authenticated users to upload their own photos only
+      allow create: if request.auth != null
+                    && request.auth.uid == userId
+                    && request.resource.size < 5 * 1024 * 1024  // 5MB max file size
+                    && request.resource.contentType.matches('image/.*');  // Images only
+
+      // Users can read their own photos
+      allow read: if request.auth != null
+                  && request.auth.uid == userId;
+
+      // Admins can read all incident photos
+      allow read: if isAdmin();
+
+      // Only admins can delete incident photos
+      allow delete: if isAdmin();
+
+      // No updates allowed (delete and re-upload instead)
+      allow update: if false;
+    }
+
+    // Deny all other access by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

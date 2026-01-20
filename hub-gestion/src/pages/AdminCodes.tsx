@@ -194,9 +194,11 @@ const AdminCodes = () => {
               <input
                 type="text"
                 value={digicode}
-                onChange={(e) => setDigicode(e.target.value)}
+                onChange={(e) => setDigicode(e.target.value.replace(/[^0-9]/g, ''))}
                 placeholder="Ex: 1234"
                 maxLength={10}
+                pattern="[0-9]*"
+                inputMode="numeric"
               />
             </div>
 
@@ -205,9 +207,11 @@ const AdminCodes = () => {
               <input
                 type="text"
                 value={alarmOff}
-                onChange={(e) => setAlarmOff(e.target.value)}
+                onChange={(e) => setAlarmOff(e.target.value.replace(/[^0-9]/g, ''))}
                 placeholder="Ex: 5678"
                 maxLength={10}
+                pattern="[0-9]*"
+                inputMode="numeric"
               />
               <span className="help-text">Code à entrer en arrivant</span>
             </div>
@@ -217,9 +221,11 @@ const AdminCodes = () => {
               <input
                 type="text"
                 value={alarmOn}
-                onChange={(e) => setAlarmOn(e.target.value)}
+                onChange={(e) => setAlarmOn(e.target.value.replace(/[^0-9]/g, ''))}
                 placeholder="Ex: 9012"
                 maxLength={10}
+                pattern="[0-9]*"
+                inputMode="numeric"
               />
               <span className="help-text">Code à entrer en partant</span>
             </div>

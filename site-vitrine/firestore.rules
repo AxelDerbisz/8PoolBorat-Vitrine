@@ -81,7 +81,7 @@ service cloud.firestore {
                     && resource.data.userId == request.auth.uid
                     && (resource.data.status == 'pending' || resource.data.status == 'confirmed')
                     && request.resource.data.status == 'cancelled'
-                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']);
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt']);
       // Admins can update bookings (validate/refuse) - only status and adminComment
       allow update: if isAdmin()
                     && request.resource.data.diff(resource.data).affectedKeys()
