@@ -44,6 +44,59 @@ service cloud.firestore {
       allow update, delete: if isAuthenticated(); // Authenticated admins can update/delete
     }
 
+    // User profiles - users can read/write their own profile
+    match /users/{userId} {
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      allow update: if isAuthenticated() && request.auth.uid == userId;
+      // Admins can read all user profiles
+      allow read: if isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Bookings - reservations system
+    match /bookings/{bookingId} {
+      // All authenticated users can read all bookings (to see calendar)
+      allow read: if isAuthenticated();
+      // Users can create their own bookings
+      allow create: if isAuthenticated()
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.status == 'pending';
+      // Users can cancel their own pending or confirmed bookings
+      allow update: if isAuthenticated()
+                    && resource.data.userId == request.auth.uid
+                    && (resource.data.status == 'pending' || resource.data.status == 'confirmed')
+                    && request.resource.data.status == 'cancelled';
+      // Admins can update any booking (validate/refuse)
+      allow update: if isAuthenticated()
+                    && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      // Admins can delete any booking
+      allow delete: if isAuthenticated()
+                    && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Incidents - problem reports
+    match /incidents/{incidentId} {
+      // Users can read their own incidents
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      // Users can create incidents
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      // Admins can read and update all incidents
+      allow read, update, delete: if isAuthenticated()
+                    && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Settings - admin only
+    match /settings/{document=**} {
+      allow read, write: if isAuthenticated()
+                    && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Admin can update user roles
+    match /users/{userId} {
+      allow update: if isAuthenticated()
+                    && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
     // Deny all other access by default
     match /{document=**} {
       allow read, write: if false;

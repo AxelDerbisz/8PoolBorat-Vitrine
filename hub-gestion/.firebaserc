@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "poolvitrine-682aa"
+  },
+  "targets": {
+    "poolvitrine-682aa": {
+      "hosting": {
+        "hub": [
+          "poolvitrine-682aa-hub"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -197,11 +197,7 @@ Ce message a été envoyé depuis www.ledorat8pool.fr
   }
 );
 
-/**
- * Example: Get Club Statistics
- *
- * Returns statistics about the club (optional example function)
- */
+
 export const getClubStats = onCall(
   { region: "europe-west1" },
   async () => {

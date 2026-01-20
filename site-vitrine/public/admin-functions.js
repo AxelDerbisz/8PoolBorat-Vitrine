@@ -158,9 +158,15 @@ function renderTeams() {
                         <input type="text" name="division" value="${team.division || ''}" required>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Capitaine</label>
-                    <input type="text" name="captain" value="${team.captain || ''}" required>
+                <div class="grid">
+                    <div class="form-group">
+                        <label>Capitaine</label>
+                        <input type="text" name="captain" value="${team.captain || ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Classement (position)</label>
+                        <input type="number" name="ranking" value="${team.ranking || 1}" min="1" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Joueurs (un par ligne)</label>
@@ -221,6 +227,7 @@ function addNewTeam() {
         name: 'Nouvelle équipe',
         division: '',
         captain: '',
+        ranking: 1,
         players: [],
         schedule: []
     };
@@ -255,6 +262,7 @@ async function saveTeam(event, teamId) {
         name: form.name.value,
         division: form.division.value,
         captain: form.captain.value,
+        ranking: parseInt(form.ranking.value) || 1,
         players: form.players.value.split('\n').filter(p => p.trim()),
         schedule: schedule,
         updatedAt: Timestamp.now()

@@ -13,6 +13,7 @@ interface Team {
   id: string;
   name: string;
   division: string;
+  captain?: string;
   players: string[];
   ranking: number;
   schedule?: Schedule[];
@@ -90,7 +91,10 @@ const Teams = () => {
               <h3>Composition de l'équipe</h3>
               <ul>
                 {team.players.map((player, index) => (
-                  <li key={index}>{player}</li>
+                  <li key={index}>
+                    {player}
+                    {team.captain && player === team.captain && ' - Capitaine'}
+                  </li>
                 ))}
               </ul>
             </div>
