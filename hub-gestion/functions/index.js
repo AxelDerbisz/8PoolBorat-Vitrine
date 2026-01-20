@@ -1,4 +1,4 @@
-// Cloud Functions for L'Edorat 8 Pool Hub - v2.0 with in-app notifications
+// Cloud Functions for L'Edorat 8 Pool Hub - v2.1 with security improvements
 const { onDocumentCreated, onDocumentUpdated } = require("firebase-functions/v2/firestore");
 const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
@@ -10,6 +10,18 @@ const db = admin.firestore();
 // Define secrets
 const resendApiKey = defineSecret("RESEND_API_KEY");
 const adminEmail = defineSecret("ADMIN_EMAIL");
+
+// HTML escape function to prevent XSS in emails
+const escapeHtml = (text) => {
+  if (!text) return "";
+  const str = String(text);
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
 
 // Helper to format date in French
 const formatDateFr = (date) => {
@@ -49,7 +61,7 @@ exports.onBookingCreated = onDocumentCreated(
       await resend.emails.send({
         from: "L'Edorat 8 Pool <onboarding@resend.dev>",
         to: [adminEmail.value()],
-        subject: `🎱 Nouvelle demande de réservation - ${booking.userName}`,
+        subject: `🎱 Nouvelle demande de réservation - ${escapeHtml(booking.userName)}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: #1a472a; color: white; padding: 20px; text-align: center;">
@@ -64,11 +76,11 @@ exports.onBookingCreated = onDocumentCreated(
                 <table style="width: 100%; border-collapse: collapse;">
                   <tr>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666;">Membre</td>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">${booking.userName}</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">${escapeHtml(booking.userName)}</td>
                   </tr>
                   <tr>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666;">Email</td>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${booking.userEmail}</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${escapeHtml(booking.userEmail)}</td>
                   </tr>
                   <tr>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666;">Date</td>
@@ -80,18 +92,18 @@ exports.onBookingCreated = onDocumentCreated(
                   </tr>
                   <tr>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666;">Billard</td>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${booking.billiardName}</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${escapeHtml(booking.billiardName)}</td>
                   </tr>
                   ${booking.companions && booking.companions.length > 0 ? `
                   <tr>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666;">Accompagnants</td>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${booking.companions.join(", ")}</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${escapeHtml(booking.companions.join(", "))}</td>
                   </tr>
                   ` : ""}
                   ${booking.comment ? `
                   <tr>
                     <td style="padding: 10px 0; color: #666;">Commentaire</td>
-                    <td style="padding: 10px 0;">${booking.comment}</td>
+                    <td style="padding: 10px 0;">${escapeHtml(booking.comment)}</td>
                   </tr>
                   ` : ""}
                 </table>
@@ -258,7 +270,7 @@ exports.onBookingUpdated = onDocumentUpdated(
         await resend.emails.send({
           from: "L'Edorat 8 Pool <onboarding@resend.dev>",
           to: [adminEmail.value()],
-          subject: `🚫 Réservation annulée - ${afterData.userName}`,
+          subject: `🚫 Réservation annulée - ${escapeHtml(afterData.userName)}`,
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
               <div style="background: #6b7280; color: white; padding: 20px; text-align: center;">
@@ -269,12 +281,12 @@ exports.onBookingUpdated = onDocumentUpdated(
               <div style="padding: 30px; background: #f5f5f5;">
                 <div style="background: white; border-radius: 8px; padding: 25px; margin-bottom: 20px;">
                   <h2 style="color: #6b7280; margin-top: 0;">🚫 Annulation de réservation</h2>
-                  <p style="color: #666;">${afterData.userName} a annulé sa réservation.</p>
+                  <p style="color: #666;">${escapeHtml(afterData.userName)} a annulé sa réservation.</p>
 
                   <table style="width: 100%; border-collapse: collapse;">
                     <tr>
                       <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666;">Membre</td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">${afterData.userName}</td>
+                      <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">${escapeHtml(afterData.userName)}</td>
                     </tr>
                     <tr>
                       <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666;">Date prévue</td>
@@ -286,7 +298,7 @@ exports.onBookingUpdated = onDocumentUpdated(
                     </tr>
                     <tr>
                       <td style="padding: 10px 0; color: #666;">Billard</td>
-                      <td style="padding: 10px 0;">${afterData.billiardName}</td>
+                      <td style="padding: 10px 0;">${escapeHtml(afterData.billiardName)}</td>
                     </tr>
                   </table>
                 </div>
@@ -353,12 +365,12 @@ exports.onBookingUpdated = onDocumentUpdated(
                     </tr>
                     <tr>
                       <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666;">Billard</td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${afterData.billiardName}</td>
+                      <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${escapeHtml(afterData.billiardName)}</td>
                     </tr>
                     ${afterData.adminComment ? `
                     <tr>
                       <td style="padding: 10px 0; color: #666;">Motif du refus</td>
-                      <td style="padding: 10px 0; font-style: italic;">${afterData.adminComment}</td>
+                      <td style="padding: 10px 0; font-style: italic;">${escapeHtml(afterData.adminComment)}</td>
                     </tr>
                     ` : ""}
                   </table>
@@ -419,7 +431,7 @@ exports.onIncidentCreated = onDocumentCreated(
       await resend.emails.send({
         from: "L'Edorat 8 Pool <onboarding@resend.dev>",
         to: [adminEmail.value()],
-        subject: `⚠️ Signalement d'incident - ${incident.title}`,
+        subject: `⚠️ Signalement d'incident - ${escapeHtml(incident.title)}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: #dc2626; color: white; padding: 20px; text-align: center;">
@@ -429,30 +441,30 @@ exports.onIncidentCreated = onDocumentCreated(
 
             <div style="padding: 30px; background: #f5f5f5;">
               <div style="background: white; border-radius: 8px; padding: 25px; margin-bottom: 20px;">
-                <h2 style="color: #dc2626; margin-top: 0;">${incident.title}</h2>
+                <h2 style="color: #dc2626; margin-top: 0;">${escapeHtml(incident.title)}</h2>
 
                 <table style="width: 100%; border-collapse: collapse;">
                   <tr>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666;">Signalé par</td>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">${incident.userName}</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">${escapeHtml(incident.userName)}</td>
                   </tr>
                   <tr>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666;">Email</td>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${incident.userEmail}</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${escapeHtml(incident.userEmail)}</td>
                   </tr>
                   <tr>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666;">Catégorie</td>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${categoryLabels[incident.category] || incident.category}</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${escapeHtml(categoryLabels[incident.category] || incident.category)}</td>
                   </tr>
                   ${incident.billiardId ? `
                   <tr>
                     <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666;">Billard concerné</td>
-                    <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${incident.billiardId}</td>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${escapeHtml(incident.billiardId)}</td>
                   </tr>
                   ` : ""}
                   <tr>
                     <td style="padding: 10px 0; color: #666; vertical-align: top;">Description</td>
-                    <td style="padding: 10px 0;">${incident.description}</td>
+                    <td style="padding: 10px 0;">${escapeHtml(incident.description)}</td>
                   </tr>
                 </table>
 
