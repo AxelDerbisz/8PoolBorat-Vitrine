@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { NotificationProvider } from './contexts/NotificationContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import Login from './pages/Login';
@@ -18,8 +19,9 @@ import './App.css';
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Layout>
+      <NotificationProvider>
+        <Router>
+          <Layout>
           <Routes>
             {/* Public Routes */}
             <Route path="/login" element={<Login />} />
@@ -107,8 +109,9 @@ function App() {
             {/* Catch all - redirect to dashboard */}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
-        </Layout>
-      </Router>
+          </Layout>
+        </Router>
+      </NotificationProvider>
     </AuthProvider>
   );
 }

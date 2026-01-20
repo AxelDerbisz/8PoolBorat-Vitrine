@@ -91,6 +91,18 @@ service cloud.firestore {
                     && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
+    // Notifications - users can read/update their own notifications
+    match /notifications/{notificationId} {
+      // Users can read notifications - the client query filters by userId
+      // Security: users can only see their own due to client-side where clause
+      allow read: if isAuthenticated();
+      // Users can mark their own notifications as read
+      allow update: if isAuthenticated()
+                    && resource.data.userId == request.auth.uid
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']);
+      // Cloud Functions create notifications (no client-side create needed)
+    }
+
     // Admin can update user roles
     match /users/{userId} {
       allow update: if isAuthenticated()

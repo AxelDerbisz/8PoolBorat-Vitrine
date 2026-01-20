@@ -1,0 +1,70 @@
+name: Deploy Hub Gestion
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'hub-gestion/src/**'
+      - 'hub-gestion/public/**'
+      - 'hub-gestion/package.json'
+      - 'hub-gestion/vite.config.ts'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hub-gestion/src/**'
+      - 'hub-gestion/public/**'
+      - 'hub-gestion/package.json'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: hub-gestion
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: hub-gestion/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          VITE_FIREBASE_API_KEY: ${{ secrets.HUB_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.HUB_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.HUB_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.HUB_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.HUB_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.HUB_FIREBASE_APP_ID }}
+
+      - name: Deploy to Firebase Hosting
+        if: github.ref == 'refs/heads/main'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUB }}
+          channelId: live
+          projectId: ${{ secrets.HUB_FIREBASE_PROJECT_ID }}
+          entryPoint: hub-gestion
+
+      - name: Deploy Preview (PR only)
+        if: github.event_name == 'pull_request'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUB }}
+          projectId: ${{ secrets.HUB_FIREBASE_PROJECT_ID }}
+          entryPoint: hub-gestion

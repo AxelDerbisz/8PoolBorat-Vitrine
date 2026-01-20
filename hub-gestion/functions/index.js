@@ -1,3 +1,4 @@
+// Cloud Functions for L'Edorat 8 Pool Hub - v2.0 with in-app notifications
 const { onDocumentCreated, onDocumentUpdated } = require("firebase-functions/v2/firestore");
 const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
@@ -149,6 +150,17 @@ exports.onBookingUpdated = onDocumentUpdated(
         // Get access codes from settings
         const settingsDoc = await db.collection("settings").doc("accessCodes").get();
         const codes = settingsDoc.exists ? settingsDoc.data() : { digicode: "----", alarmOff: "----", alarmOn: "----" };
+
+        // Create in-app notification
+        await db.collection("notifications").add({
+          userId: afterData.userId,
+          type: "booking_confirmed",
+          title: "Réservation confirmée",
+          message: `Votre réservation du ${formatDateFr(startTime)} a été confirmée.`,
+          read: false,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          bookingId: bookingId,
+        });
 
         await resend.emails.send({
           from: "L'Edorat 8 Pool <onboarding@resend.dev>",
@@ -302,6 +314,19 @@ exports.onBookingUpdated = onDocumentUpdated(
     // Booking refused
     if (afterData.status === "refused") {
       try {
+        // Create in-app notification
+        await db.collection("notifications").add({
+          userId: afterData.userId,
+          type: "booking_refused",
+          title: "Réservation refusée",
+          message: afterData.adminComment
+            ? `Votre réservation du ${formatDateFr(startTime)} a été refusée: ${afterData.adminComment}`
+            : `Votre réservation du ${formatDateFr(startTime)} a été refusée.`,
+          read: false,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          bookingId: bookingId,
+        });
+
         await resend.emails.send({
           from: "L'Edorat 8 Pool <onboarding@resend.dev>",
           to: [afterData.userEmail],

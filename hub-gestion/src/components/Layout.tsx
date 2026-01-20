@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import NotificationBell from './NotificationBell';
 import './Layout.css';
 
 interface LayoutProps {
@@ -65,6 +66,7 @@ const Layout = ({ children }: LayoutProps) => {
         <div className="header-right">
           {user && (
             <>
+              <NotificationBell />
               <span className="user-name">
                 {userProfile?.firstName || user.email}
               </span>
